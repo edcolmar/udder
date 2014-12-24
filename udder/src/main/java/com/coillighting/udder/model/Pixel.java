@@ -2,6 +2,8 @@ package com.coillighting.udder.model;
 
 import com.coillighting.udder.blend.BlendOp;
 
+import java.awt.Color;
+
 /** A simple data structure for representing high-resolution RGB pixel data.
  *  We eventually mix down to 8 bit RGB, but we animate and mix in this high
  *  resolution (3x float) space. We have this luxury because our fixtures are
@@ -164,7 +166,14 @@ public class Pixel {
         this.r = (float)rr / conv;
         this.g = (float)gg / conv;
         this.b = (float)bb / conv;
+		//System.out.format("R: %f  G: %f  B: %f \n", this.r, this.g, this.b);
     }
+	
+	public final void setHSBColor(float hue, float saturation, float brightness) {
+		//System.out.println("Pixel setHSBColor.");
+		int rgb = Color.HSBtoRGB(hue, saturation, brightness);
+		this.setRGBColor(rgb);
+	}
 
     /** Ignore alpha for now (see above). */
     public static Pixel fromRGBA(int rgba) {

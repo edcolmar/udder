@@ -13,7 +13,8 @@ import org.boon.json.JsonFactory;
 import com.coillighting.udder.infrastructure.*;
 import com.coillighting.udder.mix.Mixer;
 import com.coillighting.udder.model.Device;
-import com.coillighting.udder.scene.DairyScene;
+// import com.coillighting.udder.scene.DairyScene;
+import com.coillighting.udder.scene.NoiseForestScene;
 import com.coillighting.udder.util.FileUtil;
 
 import static com.coillighting.udder.util.LogUtil.log;
@@ -120,7 +121,7 @@ public class Main {
         }
 
         PatchSheet patchSheet = PatchSheet.parsePatchSheet(patchSheetPath);
-        Mixer mixer = DairyScene.create(patchSheet.getModelSpaceDevices());
+        Mixer mixer = NoiseForestScene.create(patchSheet.getModelSpaceDevices());
 
         ServicePipeline pipeline = new ServicePipeline(
                 mixer,

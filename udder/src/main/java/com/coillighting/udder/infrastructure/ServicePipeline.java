@@ -32,7 +32,10 @@ public class ServicePipeline {
     protected Mixer mixer;
     protected Router router;
     protected Queue<Command> commandQueue;
+	
+	protected Queue<Command> midiCommandQueue;
     protected HttpServiceContainer httpServiceContainer;
+	protected MidiServiceContainer midiServiceContainer;
     protected Server server;
     protected int listenPort = 8080;
     protected InetSocketAddress listenAddress;
@@ -76,6 +79,7 @@ public class ServicePipeline {
         this.router.addRoutes("mixer0", this.mixer);
 
         this.commandQueue = new ConcurrentLinkedQueue<Command>();
+		this.midiCommandQueue = new ConcurrentLinkedQueue<Command>();
 
         for(int i=0; i<outputCt; i++) {
             TransmissionCoupling coupling = new TransmissionCoupling(opcServerAddresses.get(i), deviceAddressMap);
@@ -99,6 +103,12 @@ public class ServicePipeline {
         this.serverConnection = new SocketConnection(this.server);
         this.listenPort = udderAddr.getPort();
         this.listenAddress = new InetSocketAddress(udderAddr.getHost(), this.listenPort);
+		
+        this.midiServiceContainer = new MidiServiceContainer(
+            this.commandQueue,
+            this.router.getCommandMap());
+        this.midiServiceContainer.setVerbose(this.verbose || this.midiServiceContainer.getVerbose());
+		
     }
 
     public void start() throws IOException {
