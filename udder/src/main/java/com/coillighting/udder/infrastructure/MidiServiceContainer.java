@@ -94,7 +94,7 @@ public class MidiServiceContainer {
 		 System.out.println("");
 		 
          if (device.getMaxTransmitters() != 0
-               && device.getDeviceInfo().getName().contains("MIDI input port 0")) {
+               && device.getDeviceInfo().getName().contains("Bus 1")) {
             System.out.println(device.getDeviceInfo().getName().toString()
                   + " was chosen");
             return device;
