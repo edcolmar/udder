@@ -28,13 +28,17 @@ public class MidiImageRollEffect extends EffectBase {
 	
 	protected int yLocation = 0;
 	
+	protected float attack = 0.05f;
+	
+	protected float attackEnv = 1.0f;
+	
 	protected float release = 0.01f;
 	
 	protected float releaseEnv = 1.0f;
 	
     // Scratch variables that we shouldn't reallocate on every
     // trip through the animation loop:
-    private Pixel p, pEnv;
+    private Pixel p;
 	
 
     public MidiImageRollEffect(ShortMessage message) {
@@ -48,7 +52,6 @@ public class MidiImageRollEffect extends EffectBase {
 		
         // Initialize temps
         p = Pixel.black();
-		pEnv = Pixel.black();
     }
 
     public Class getStateClass() {
@@ -71,11 +74,6 @@ public class MidiImageRollEffect extends EffectBase {
 		
 		ShortMessage message = (ShortMessage) state;
 		
-        //MidiNote command = (MidiNote) state;
-		
-		// Integer noteNumber = command.getNoteNumber();
-		// Integer velocity = command.getVelocity();
-		
 		//System.out.println(" setState message.getData1(): " + message.getData1());
 		//System.out.println(" setState message.getData2(): " + message.getData2());
 		//System.out.println(" setState message.getChannel(): " + message.getChannel());
@@ -94,12 +92,12 @@ public class MidiImageRollEffect extends EffectBase {
 		{
 		case 0x80:
 		//  NOTE OFF
-			//System.out.println("MidiMonochromeEffect Note Off.");
+			//System.out.println("MidiImageRollEffect Note Off.");
 			ignoreCommand = true;
 			break;
 		case 0x90:
 		//  NOTE ON.  
-			//System.out.println("MidiMonochromeEffect Note On.");
+			//System.out.println("MidiImageRollEffect Note On.");
 			// brightness = velocity / 127.0f;
 			this.setNote(message);
 			break;
@@ -119,6 +117,24 @@ public class MidiImageRollEffect extends EffectBase {
 			
 		case 0xb0:
 		//  CONTROL CHANGE
+			//System.out.println("MidiImageRollEffect Control Change.");
+			
+			if (message.getData1() == 1) {
+				if (message.getData2() > 0) {
+					this.attack = message.getData2() / 127.0f / 3.0f;
+				} else {
+					this.attack = 0.01f;
+				}
+				//System.out.format("MidiImageRollEffect Set Attack: %f", this.attack);
+			} else if (message.getData1() == 2) {
+				if (message.getData2() > 0) {
+					this.release = message.getData2() / 127.0f / 3.0f;
+				} else {
+					this.release = 0.01f;
+				}
+				//System.out.format("MidiImageRollEffect Set Release: %f", this.release);
+			}
+			
 			ignoreCommand = true;
 			break;		
 			
@@ -156,28 +172,38 @@ public class MidiImageRollEffect extends EffectBase {
 				
 				if (releaseEnv > 0.05f) {
 					
-					// System.out.format("releaseEnv: %f ", releaseEnv);
-					
-		            for(int i=0; i<devices.length; i++) {
-		                Device dev = devices[i];
-						p.setRGBColor(image.getRGB(i, yLocation));
-				
-						// pEnv.setColor(p.r * releaseEnv,p.g * releaseEnv ,p.b * releaseEnv );
+					if (attackEnv > 0.99f) {
+			            for(int i=0; i<devices.length; i++) {
+			                Device dev = devices[i];
+							p.setRGBColor(image.getRGB(i, yLocation));
+							p.scale(releaseEnv);
+							pixels[i].setColor(p);
+						}
+					releaseEnv = releaseEnv - release;
 						
-						p.scale(releaseEnv);
-				
-		        		pixels[i].setColor(p);
-						
+					} else {
+			            for(int i=0; i<devices.length; i++) {
+			                Device dev = devices[i];
+							p.setRGBColor(image.getRGB(i, yLocation));
+							p.scale(attackEnv);
+							pixels[i].setColor(p);
+						}
+					attackEnv = attackEnv + attack;
 					}
 					
-					releaseEnv = releaseEnv - release;
+					
 					yLocation = yLocation + 1;
 					
 				} else {
 					
 					releaseEnv = 1.0f;
+					attackEnv = 0.0f;
 					this.dirty = false;
 					yLocation = 0;
+					
+		            for(Pixel px: pixels) {
+		                px.setBlack();
+		            }
 					
 				}
 				
