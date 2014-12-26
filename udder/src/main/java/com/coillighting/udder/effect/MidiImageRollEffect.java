@@ -67,7 +67,7 @@ public class MidiImageRollEffect extends EffectBase {
 
     public void setState(Object state) throws ClassCastException {
 		
-		System.out.println("MidiImageRollEffect setState ");
+		// System.out.println("MidiImageRollEffect setState ");
 		
 		ShortMessage message = (ShortMessage) state;
 		
@@ -143,10 +143,10 @@ public class MidiImageRollEffect extends EffectBase {
     /** Draw pictures only when needed. */
     public void animate(TimePoint timePoint) {
 		if(this.dirty) {
-			System.out.println("MidiImageRollEffect this.dirty ");
+			// System.out.println("MidiImageRollEffect this.dirty ");
 			
 	        if(image == null) {
-				System.out.println("MidiImageRollEffect Image is null ");
+				// System.out.println("MidiImageRollEffect Image is null ");
 				
 	            for(Pixel px: pixels) {
 	                px.setBlack();
@@ -156,7 +156,7 @@ public class MidiImageRollEffect extends EffectBase {
 				
 				if (releaseEnv > 0.05f) {
 					
-					System.out.format("releaseEnv: %f ", releaseEnv);
+					// System.out.format("releaseEnv: %f ", releaseEnv);
 					
 		            for(int i=0; i<devices.length; i++) {
 		                Device dev = devices[i];
