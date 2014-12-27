@@ -10,6 +10,7 @@ import javax.sound.midi.*;
 import static com.coillighting.udder.util.LogUtil.log;
 
 import com.coillighting.udder.util.StringUtil;
+import com.coillighting.udder.effect.MidiImageRollState;
 
 public class MidiInputReceiver implements Receiver {
 	
@@ -48,19 +49,29 @@ public class MidiInputReceiver implements Receiver {
 		//System.out.println("  msg.getMessage(): " + msg.getMessage());
 
 		ShortMessage message = (ShortMessage) msg;
+		
+		try {
+			MidiImageRollState mMessage = new MidiImageRollState(message);
+			
+			//System.out.println("  message.getData1(): " + mMessage.getData1());
+			//System.out.println("  message.getData2(): " + mMessage.getData2());
+			//System.out.println("  message.getChannel(): " + mMessage.getChannel());
+			//System.out.println("  message.getCommand(): " + mMessage.getCommand());
+		
+		
+			String hardcodedRoute = "/mixer0/layer" + mMessage.getChannel() + "/effect";
+			//String hardcodedRoute = "/mixer0/layer0/effect";
+		
+			Command command = new Command(hardcodedRoute, mMessage);
+		
+			this.queue.offer(command);
+			
+		} catch (InvalidMidiDataException e) {
+			
+		}
+		
 
-		//System.out.println("  message.getData1(): " + message.getData1());
-		//System.out.println("  message.getData2(): " + message.getData2());
-		//System.out.println("  message.getChannel(): " + message.getChannel());
-		//System.out.println("  message.getCommand(): " + message.getCommand());
 		
-		
-		String hardcodedRoute = "/mixer0/layer" + message.getChannel() + "/effect";
-		//String hardcodedRoute = "/mixer0/layer0/effect";
-		
-		Command command = new Command(hardcodedRoute, msg);
-		
-		this.queue.offer(command);
 		
     }
     public void close() {}

@@ -14,6 +14,7 @@ import com.coillighting.udder.blend.MultiplyBlendOp;
 import com.coillighting.udder.effect.MonochromeEffect;
 import com.coillighting.udder.effect.MidiMonochromeEffect;
 import com.coillighting.udder.effect.MidiImageRollEffect;
+import com.coillighting.udder.effect.MidiImageRollState;
 import com.coillighting.udder.effect.woven.WovenEffect;
 import com.coillighting.udder.mix.Layer;
 import com.coillighting.udder.mix.Mixable;
@@ -42,7 +43,7 @@ public abstract class NoiseForestScene {
         // The background is additive (unlike the gel layer
         // below), so add color globally using this level.
 		
-		ShortMessage shortmessage = new ShortMessage();
+		MidiImageRollState shortmessage = new MidiImageRollState();
 		
         Layer background = new Layer("Background",
             new MidiMonochromeEffect(shortmessage));

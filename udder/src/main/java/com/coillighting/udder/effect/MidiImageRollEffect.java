@@ -11,6 +11,7 @@ import java.awt.Color;
 import com.coillighting.udder.mix.TimePoint;
 import com.coillighting.udder.model.Device;
 import com.coillighting.udder.model.Pixel;
+import com.coillighting.udder.effect.MidiImageRollState;
 
 import static com.coillighting.udder.util.LogUtil.log;
 
@@ -41,7 +42,7 @@ public class MidiImageRollEffect extends EffectBase {
     private Pixel p;
 	
 
-    public MidiImageRollEffect(ShortMessage message) {
+    public MidiImageRollEffect(MidiImageRollState message) {
 		
 		System.out.println("MidiImageRollEffect INIT ");
         
@@ -55,7 +56,7 @@ public class MidiImageRollEffect extends EffectBase {
     }
 
     public Class getStateClass() {
-        return ShortMessage.class;
+        return MidiImageRollState.class;
     }
 
     public Object getState() {
@@ -70,9 +71,19 @@ public class MidiImageRollEffect extends EffectBase {
 
     public void setState(Object state) throws ClassCastException {
 		
-		// System.out.println("MidiImageRollEffect setState ");
+		//System.out.println("MidiImageRollEffect setState ");
 		
-		ShortMessage message = (ShortMessage) state;
+		MidiImageRollState message = (MidiImageRollState) state;
+		
+		//System.out.println(message.getFilename());
+		
+		if (message.getFilename() != null) {
+			System.out.println("MidiImageRollEffect set new filename");
+			this.filename = message.getFilename();
+			this.reloadImage();
+		}
+		
+		
 		
 		//System.out.println(" setState message.getData1(): " + message.getData1());
 		//System.out.println(" setState message.getData2(): " + message.getData2());
@@ -145,7 +156,7 @@ public class MidiImageRollEffect extends EffectBase {
 		
     }
 
-    public void setNote(ShortMessage message) {
+    public void setNote(MidiImageRollState message) {
         // Do not dirty this effect if color hasn't actually changed.
         if(message == null) {
             throw new NullPointerException("MidiImageRollEffect requires a note.");
@@ -224,6 +235,7 @@ public class MidiImageRollEffect extends EffectBase {
      *  Don't crash the server.
      */
     public void reloadImage() {
+		System.out.println("MidiImageRollEffect reloadImage ");
         this.clearImage();
         if(filename != null) {
             File imageFile = new File(filename);
