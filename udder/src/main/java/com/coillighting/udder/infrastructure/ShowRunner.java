@@ -39,6 +39,8 @@ public class ShowRunner implements Runnable {
     protected long previousFrameRealTimeMillis = 0;
     protected long frameCounter = 0;
 	
+	private Boolean imageBufferWriteEnable = true;
+	
 	private BufferedImage imageBuffer = null;
 	protected int imageBufferCurrentRow =1;
 	protected int imageBufferCurrentColumn =1;
@@ -155,59 +157,60 @@ public class ShowRunner implements Runnable {
                     for(Queue<Frame> frameQueue: frameQueues) {
                         Frame frame = Frame.createByCopy(timePoint, mixerPixels);
 						
+						if (imageBufferWriteEnable){
 						
-						// Write output frame to image buffer
-						// This probably does not belong here.
-						// It probably wants some kind of enable/disable toggle
+							// Write output frame to image buffer
+							// This probably does not belong here.
+							// It probably wants some kind of enable/disable toggle
 						
-						//System.out.format("ShowRunner imageBufferCurrentColumn: %d \n", this.imageBufferCurrentColumn);
-						// System.out.format("ShowRunner imageBufferCurrentRow: %d \n", this.imageBufferCurrentRow);
+							//System.out.format("ShowRunner imageBufferCurrentColumn: %d \n", this.imageBufferCurrentColumn);
+							// System.out.format("ShowRunner imageBufferCurrentRow: %d \n", this.imageBufferCurrentRow);
 						
-						if (imageBuffer == null) {
-							System.out.println("ShowRunner createImageBuffer()");
-							createImageBuffer();
-						}
+							if (imageBuffer == null) {
+								System.out.println("ShowRunner createImageBuffer()");
+								createImageBuffer();
+							}
 						
-						if (imageBufferCurrentRow < imageBufferMaxRowCount) {
-							// Add a row of pixel data to the output image
-							//System.out.println("ShowRunner imageBufferCurrentRow < imageBufferMaxRowCount");
-							pixels = frame.getPixels();
-				            for(Pixel px: pixels) {
-				                this.imageBuffer.setRGB(this.imageBufferCurrentColumn, this.imageBufferCurrentRow, px.toRGB());
-								this.imageBufferCurrentColumn++;
-				            }
-							this.imageBufferCurrentColumn = 1;
-							this.imageBufferCurrentRow ++;
+							if (imageBufferCurrentRow < imageBufferMaxRowCount) {
+								// Add a row of pixel data to the output image
+								//System.out.println("ShowRunner imageBufferCurrentRow < imageBufferMaxRowCount");
+								pixels = frame.getPixels();
+					            for(Pixel px: pixels) {
+					                this.imageBuffer.setRGB(this.imageBufferCurrentColumn, this.imageBufferCurrentRow, px.toRGB());
+									this.imageBufferCurrentColumn++;
+					            }
+								this.imageBufferCurrentColumn = 1;
+								this.imageBufferCurrentRow ++;
 							
-						} else if (imageBufferCurrentRow == imageBufferMaxRowCount) {
-							// Add a row of pixel data to the output image
-							// Save the image and reset.
-							//System.out.println("ShowRunner imageBufferCurrentRow == imageBufferMaxRowCount");
-							pixels = frame.getPixels();
-				            for(Pixel px: pixels) {
-				                this.imageBuffer.setRGB(this.imageBufferCurrentColumn, this.imageBufferCurrentRow, px.toRGB());
-								this.imageBufferCurrentColumn ++;
-				            }
+							} else if (imageBufferCurrentRow == imageBufferMaxRowCount) {
+								// Add a row of pixel data to the output image
+								// Save the image and reset.
+								//System.out.println("ShowRunner imageBufferCurrentRow == imageBufferMaxRowCount");
+								pixels = frame.getPixels();
+					            for(Pixel px: pixels) {
+					                this.imageBuffer.setRGB(this.imageBufferCurrentColumn, this.imageBufferCurrentRow, px.toRGB());
+									this.imageBufferCurrentColumn ++;
+					            }
 							
-							try {
-								filename = filenamePrefix + Integer.toString(this.imageBufferSavedCount);
-								imageFile = File.createTempFile(filename, ".PNG");
-								ImageIO.write(this.imageBuffer, "PNG", imageFile);
+								try {
+									filename = filenamePrefix + Integer.toString(this.imageBufferSavedCount);
+									imageFile = File.createTempFile(filename, ".PNG");
+									ImageIO.write(this.imageBuffer, "PNG", imageFile);
 								
-								System.out.println(imageFile.getAbsolutePath() + " isFile: " + imageFile.isFile() + " isDir:" + imageFile.isDirectory());
+									System.out.println(imageFile.getAbsolutePath() + " isFile: " + imageFile.isFile() + " isDir:" + imageFile.isDirectory());
 								
-							} catch (IOException e) {
-					        	e.printStackTrace();
-					        }
+								} catch (IOException e) {
+						        	e.printStackTrace();
+						        }
 
-							this.imageBufferCurrentColumn = 1;
-							this.imageBufferCurrentRow =1;
-							this.imageBufferSavedCount ++;
-						} else {
-							// Should not happen - reset
+								this.imageBufferCurrentColumn = 1;
+								this.imageBufferCurrentRow =1;
+								this.imageBufferSavedCount ++;
+							} else {
+								// Should not happen - reset
+							}
+						
 						}
-						
-						
 						
 
                         if(!frameQueue.offer(frame)) {
