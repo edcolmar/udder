@@ -4,7 +4,6 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
@@ -22,8 +21,7 @@ import static com.coillighting.udder.util.LogUtil.log;
 /** Stretch and squeeze a raster image over the pointcloud representing the
  *  Devices in your show. See TextureEffectState for options.
  *
- *  FUTURE add an affine transform layer to the manual side, for
- *  easy rotations, scalings, etc.
+ * TODO rename to StretchEffect.
  */
 public class TextureEffect extends EffectBase {
 
@@ -49,6 +47,7 @@ public class TextureEffect extends EffectBase {
     // Scratch variables that we shouldn't reallocate on every
     // trip through the animation loop:
     private Pixel p, p11, p12, p21, p22;
+    private Point2D.Double xyNorm;
 
     /** The longest it will take for one corner to complete
      *  a single transit.
@@ -77,6 +76,7 @@ public class TextureEffect extends EffectBase {
         p12 = Pixel.black();
         p21 = Pixel.black();
         p22 = Pixel.black();
+        xyNorm = new Point2D.Double(0.0, 0.0);
 
         this.reloadImage();
     }
@@ -127,6 +127,7 @@ public class TextureEffect extends EffectBase {
 
     /** If we can't load the image, log an error and proceed.
      *  Don't crash the server.
+     *  FIXME REF deduplicate w/RollEffect.reloadImage
      */
     public void reloadImage() {
         this.clearImage();
@@ -271,7 +272,7 @@ public class TextureEffect extends EffectBase {
             final double devMinY = deviceBounds.getMinY();
             final double devWidth = deviceBounds.getWidth();
             final double devHeight = deviceBounds.getHeight();
-            Point2D.Double xyNorm = new Point2D.Double(0.0, 0.0);
+            xyNorm.setLocation(0.0, 0.0);
             ControlQuad controlQuad;
 
             if(!automatic) {
