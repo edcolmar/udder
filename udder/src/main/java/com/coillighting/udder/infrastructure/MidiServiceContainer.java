@@ -44,55 +44,55 @@ public class MidiServiceContainer {
             throw new NullPointerException(
                     "MidiServiceContainer requires a commandMap for dispatching commands.");
         }
-		
-		// System.out.println("MIDIServiceContainer INIT");
-		
+        
+        // System.out.println("MIDIServiceContainer INIT");
+        
         this.queue = queue;
         this.commandMap = commandMap;
 
-		MidiDevice inputDevice;
-		
-		try {
-			inputDevice = MidiServiceContainer.getInputDevice();
-			
-			//get all transmitters
-	        List<Transmitter> transmitters = inputDevice.getTransmitters();
-	        //and for each transmitter
+        MidiDevice inputDevice;
+        
+        try {
+            inputDevice = MidiServiceContainer.getInputDevice();
+            
+            //get all transmitters
+            List<Transmitter> transmitters = inputDevice.getTransmitters();
+            //and for each transmitter
 
-	        for(int j = 0; j<transmitters.size();j++) {
-	            //create a new receiver
-	            transmitters.get(j).setReceiver(
-	                    //using my own MidiInputReceiver
-	                    new MidiInputReceiver(this.queue, this.commandMap, inputDevice.getDeviceInfo().toString())
-	            );
-	        }
+            for(int j = 0; j<transmitters.size();j++) {
+                //create a new receiver
+                transmitters.get(j).setReceiver(
+                        //using my own MidiInputReceiver
+                        new MidiInputReceiver(this.queue, this.commandMap, inputDevice.getDeviceInfo().toString())
+                );
+            }
 
-	        Transmitter trans = inputDevice.getTransmitter();
-	        trans.setReceiver(new MidiInputReceiver(this.queue, this.commandMap, inputDevice.getDeviceInfo().toString()));
+            Transmitter trans = inputDevice.getTransmitter();
+            trans.setReceiver(new MidiInputReceiver(this.queue, this.commandMap, inputDevice.getDeviceInfo().toString()));
 
-	        //open each device
-	        inputDevice.open();
-	        //if code gets this far without throwing an exception
-	        //print a success message
-	        System.out.println(inputDevice.getDeviceInfo()+" Was Opened");
-			
-		} catch (Exception exc) {
-			// TODO: handle exception
-		}
+            //open each device
+            inputDevice.open();
+            //if code gets this far without throwing an exception
+            //print a success message
+            System.out.println(inputDevice.getDeviceInfo()+" Was Opened");
+            
+        } catch (Exception exc) {
+            // TODO: handle exception
+        }
     }
-	
+    
    public static MidiDevice getInputDevice() throws MidiUnavailableException {
       MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
-	  System.out.println("Available MIDI Devices: ");
+      System.out.println("Available MIDI Devices: ");
       for (int i = 0; i < infos.length; i++) {
          MidiDevice device = MidiSystem.getMidiDevice(infos[i]);
 
-		 System.out.println("MIDI Device Found:");
-		 System.out.println("  Name: " + device.getDeviceInfo().getName());
-		 System.out.println("  Description: " + device.getDeviceInfo().getDescription());
-		 System.out.println("  Vendor: " + device.getDeviceInfo().getVendor());
-		 System.out.println("");
-		 
+         System.out.println("MIDI Device Found:");
+         System.out.println("  Name: " + device.getDeviceInfo().getName());
+         System.out.println("  Description: " + device.getDeviceInfo().getDescription());
+         System.out.println("  Vendor: " + device.getDeviceInfo().getVendor());
+         System.out.println("");
+         
          if (device.getMaxTransmitters() != 0
                && device.getDeviceInfo().getName().contains("Bus 1")) {
             System.out.println(device.getDeviceInfo().getName().toString()
