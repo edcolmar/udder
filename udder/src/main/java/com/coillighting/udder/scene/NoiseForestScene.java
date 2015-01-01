@@ -11,6 +11,7 @@ import javax.sound.midi.*;
 import com.coillighting.udder.blend.BlendOp;
 import com.coillighting.udder.blend.MaxBlendOp;
 import com.coillighting.udder.blend.MultiplyBlendOp;
+import com.coillighting.udder.blend.MaskBlendOp;
 import com.coillighting.udder.effect.MonochromeEffect;
 import com.coillighting.udder.effect.MidiMonochromeEffect;
 import com.coillighting.udder.effect.MidiImageRollEffect;
@@ -33,6 +34,7 @@ public abstract class NoiseForestScene {
     public static Mixer create(Device[] devices) {
         BlendOp max = new MaxBlendOp();
         BlendOp mult = new MultiplyBlendOp();
+		BlendOp mask = new MaskBlendOp();
 
         // Add layers from bottom (background) to top (foreground),
         // in order of composition.
