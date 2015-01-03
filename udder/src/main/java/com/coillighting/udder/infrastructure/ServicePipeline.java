@@ -79,7 +79,7 @@ public class ServicePipeline {
         this.router.addRoutes("mixer0", this.mixer);
 
         this.commandQueue = new ConcurrentLinkedQueue<Command>();
-		this.midiCommandQueue = new ConcurrentLinkedQueue<Command>();
+		//this.midiCommandQueue = new ConcurrentLinkedQueue<Command>();
 
         for(int i=0; i<outputCt; i++) {
             // TODO add support for heterogeneous transmitter types (like video out)
@@ -89,6 +89,12 @@ public class ServicePipeline {
             transmissionCouplings.add(coupling);
             frameQueues.add(coupling.frameQueue);
         }
+        
+        Transmitter transmitter = ImageRenderTransmissionCouplingFactory.create(deviceAddressMap);
+        TransmissionCoupling coupling = new TransmissionCoupling(transmitter);
+        transmissionCouplings.add(coupling);
+        frameQueues.add(coupling.frameQueue);
+        
         this.showRunner = new ShowRunner(
                 frameDelayMillis,
                 this.commandQueue,
