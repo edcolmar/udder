@@ -6,7 +6,10 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.List;
 
-import javax.sound.midi.*;  
+import javax.sound.midi.MidiDevice; 
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.MidiSystem;
+//import javax.sound.midi.*;  
 
 import org.boon.json.JsonFactory;
 import org.simpleframework.http.core.Container;
@@ -56,7 +59,7 @@ public class MidiServiceContainer {
             inputDevice = MidiServiceContainer.getInputDevice();
             
             //get all transmitters
-            List<Transmitter> transmitters = inputDevice.getTransmitters();
+            List<javax.sound.midi.Transmitter> transmitters = inputDevice.getTransmitters();
             //and for each transmitter
 
             for(int j = 0; j<transmitters.size();j++) {
@@ -67,7 +70,7 @@ public class MidiServiceContainer {
                 );
             }
 
-            Transmitter trans = inputDevice.getTransmitter();
+            javax.sound.midi.Transmitter trans = inputDevice.getTransmitter();
             trans.setReceiver(new MidiInputReceiver(this.queue, this.commandMap, inputDevice.getDeviceInfo().toString()));
 
             //open each device
