@@ -15,6 +15,7 @@ import com.coillighting.udder.blend.MaskBlendOp;
 import com.coillighting.udder.effect.MonochromeEffect;
 import com.coillighting.udder.effect.MidiMonochromeEffect;
 import com.coillighting.udder.effect.MidiImageRollEffect;
+import com.coillighting.udder.effect.MidiSparkleEffect;
 import com.coillighting.udder.effect.MidiImageRollState;
 import com.coillighting.udder.effect.woven.WovenEffect;
 import com.coillighting.udder.mix.Layer;
@@ -58,6 +59,14 @@ public abstract class NoiseForestScene {
         imageRoll.setBlendOp(max);
 		//background.setLevel(1.0);
         layers.add(imageRoll);
+        
+        Layer sparkle = new Layer("sparkle",
+            new MidiSparkleEffect(shortmessage));
+        sparkle.setBlendOp(max);
+		//background.setLevel(1.0);
+        layers.add(sparkle);
+        
+        
 
         // In the mult blendop, white=transparent. Tint
         // everything globally by adjusting this color.

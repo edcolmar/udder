@@ -90,6 +90,8 @@ public class ServicePipeline {
             frameQueues.add(coupling.frameQueue);
         }
         
+        // Render out PNG files to a temporary folder.
+        
         Transmitter transmitter = ImageRenderTransmissionCouplingFactory.create(deviceAddressMap);
         TransmissionCoupling coupling = new TransmissionCoupling(transmitter);
         transmissionCouplings.add(coupling);

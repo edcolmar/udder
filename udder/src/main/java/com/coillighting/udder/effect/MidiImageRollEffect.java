@@ -15,7 +15,7 @@ import com.coillighting.udder.effect.MidiImageRollState;
 
 import static com.coillighting.udder.util.LogUtil.log;
 
-/** Show a single color on all pixels. */
+/** Plays an image vertically when a midi note arrives. */
 public class MidiImageRollEffect extends EffectBase {
 
     private boolean dirty = false;
@@ -77,14 +77,14 @@ public class MidiImageRollEffect extends EffectBase {
 		
 		//System.out.println(message.getFilename());
 		
+        // does the message payload contain a new file to load?
+        // Or is it just midi data
 		if (message.getFilename() != null) {
 			System.out.println("MidiImageRollEffect set new filename");
 			this.filename = message.getFilename();
 			this.reloadImage();
 		}
-		
-		
-		
+
 		//System.out.println(" setState message.getData1(): " + message.getData1());
 		//System.out.println(" setState message.getData2(): " + message.getData2());
 		//System.out.println(" setState message.getChannel(): " + message.getChannel());
@@ -92,38 +92,28 @@ public class MidiImageRollEffect extends EffectBase {
 		
 		Integer noteNumber = message.getData1();
 		Integer velocity = message.getData2();
-		
-		//System.out.format("MidiMonochromeEffect hue: %f \n", hue);
-		
-		// float brightness = 1.0f;
-		
-		Boolean ignoreCommand = false;
-		
+        
 		switch (message.getCommand())
 		{
 		case 0x80:
 		//  NOTE OFF
-			//System.out.println("MidiImageRollEffect Note Off.");
-			ignoreCommand = true;
+			//System.out.println(" Note Off.");
 			break;
 		case 0x90:
 		//  NOTE ON.  
-			//System.out.println("MidiImageRollEffect Note On.");
+			//System.out.println(" Note On.");
 			// brightness = velocity / 127.0f;
 			this.setNote(message);
 			break;
 		case 0xa0:
 		//  POLY KEY PRESSURE
-			ignoreCommand = true;
 			break;
 		case 0xd0:
 		//  KEY PRESSURE
-			ignoreCommand = true;
 			break;
 			
 		case 0xc0:
 		//  PROGRAM CHANGE
-			ignoreCommand = true;
 			break;
 			
 		case 0xb0:
@@ -146,11 +136,9 @@ public class MidiImageRollEffect extends EffectBase {
 				//System.out.format("MidiImageRollEffect Set Release: %f", this.release);
 			}
 			
-			ignoreCommand = true;
 			break;		
 			
 		default:
-			ignoreCommand = true;
 			break;	
 		}
 		
@@ -181,8 +169,8 @@ public class MidiImageRollEffect extends EffectBase {
 				
 			} else {
 				
+                // FADES
 				if (releaseEnv > 0.05f) {
-					
 					if (attackEnv > 0.99f) {
 			            for(int i=0; i<devices.length; i++) {
 			                Device dev = devices[i];
@@ -201,12 +189,11 @@ public class MidiImageRollEffect extends EffectBase {
 						}
 					attackEnv = attackEnv + attack;
 					}
-					
-					
 					yLocation = yLocation + 1;
 					
 				} else {
 					
+                    // CLIP THE VERY BOTTOM to prevent flickering
 					releaseEnv = 1.0f;
 					attackEnv = 0.0f;
 					this.dirty = false;
@@ -215,14 +202,9 @@ public class MidiImageRollEffect extends EffectBase {
 		            for(Pixel px: pixels) {
 		                px.setBlack();
 		            }
-					
 				}
-				
-				
 			}
-			
 		}
-		
     }
 	
     private void clearImage() {
