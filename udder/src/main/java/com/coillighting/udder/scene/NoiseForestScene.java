@@ -54,11 +54,29 @@ public abstract class NoiseForestScene {
 		//background.setLevel(1.0);
         layers.add(background);
 		
-        Layer imageRoll = new Layer("imageRoll",
+        Layer imageRoll1 = new Layer("imageRoll1-MAX",
             new MidiImageRollEffect(shortmessage));
-        imageRoll.setBlendOp(max);
+        imageRoll1.setBlendOp(max);
 		//background.setLevel(1.0);
-        layers.add(imageRoll);
+        layers.add(imageRoll1);
+        
+        Layer imageRoll2 = new Layer("imageRoll2-MASK",
+            new MidiImageRollEffect(shortmessage));
+        imageRoll2.setBlendOp(mask);
+		//background.setLevel(1.0);
+        layers.add(imageRoll2);
+        
+        Layer imageRoll3 = new Layer("imageRoll3-MAX",
+            new MidiImageRollEffect(shortmessage));
+        imageRoll3.setBlendOp(max);
+		//background.setLevel(1.0);
+        layers.add(imageRoll3);
+        
+        Layer imageRoll4 = new Layer("imageRoll4-MAX",
+            new MidiImageRollEffect(shortmessage));
+        imageRoll4.setBlendOp(max);
+		//background.setLevel(1.0);
+        layers.add(imageRoll4);
         
         Layer sparkle = new Layer("sparkle",
             new MidiSparkleEffect(shortmessage));

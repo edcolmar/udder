@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+curl -X POST -d @json/midi_imageroll_load_file1.json http://192.168.0.250:8080/mixer0/layer1/effect
+curl -X POST -d @json/level_full.json http://192.168.0.250:8080/mixer0/layer1
+curl -X POST -d @json/midi_imageroll_load_file2.json http://192.168.0.250:8080/mixer0/layer2/effect
+curl -X POST -d @json/level_full.json http://192.168.0.250:8080/mixer0/layer2
+curl -X POST -d @json/midi_imageroll_load_file3.json http://192.168.0.250:8080/mixer0/layer3/effect
+curl -X POST -d @json/level_full.json http://192.168.0.250:8080/mixer0/layer3
+curl -X POST -d @json/midi_imageroll_load_file4.json http://192.168.0.250:8080/mixer0/layer4/effect
+curl -X POST -d @json/level_full.json http://192.168.0.250:8080/mixer0/layer4
