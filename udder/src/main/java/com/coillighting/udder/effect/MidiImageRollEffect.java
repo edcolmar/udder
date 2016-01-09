@@ -168,6 +168,7 @@ public class MidiImageRollEffect extends EffectBase {
 	            }
 				
 			} else {
+				// Pixel offset by note number
 				
                 // FADES
 				if (releaseEnv > 0.05f) {

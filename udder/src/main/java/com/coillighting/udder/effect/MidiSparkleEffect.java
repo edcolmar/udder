@@ -137,9 +137,9 @@ public class MidiSparkleEffect extends EffectBase {
             
 		} else if (message.getData1() == 4) {
 			if (message.getData2() > 0) {
-				this.coverage = message.getData2() / 127.0f ;
+				this.coverage = message.getData2() / 10000.0f ;
 			} else {
-				this.coverage = 0.01f;
+				this.coverage = 0.0001f;
 			}
 			//System.out.format("MidiSparkleEffect Set Saturation: %f", this.saturation);
             
