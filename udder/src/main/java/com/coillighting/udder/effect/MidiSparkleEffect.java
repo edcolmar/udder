@@ -22,11 +22,11 @@ public class MidiSparkleEffect extends EffectBase {
 	
 	protected float releaseEnv = 1.0f;
     
-    protected float saturation = 1.0f;
+    protected float saturation = 0.0f;
     
     protected float brightness = 1.0f;
     
-    protected float coverage = 1.0f;
+    protected float coverage = 0.0001f;
     
     // Scratch variables that we shouldn't reallocate on every
     // trip through the animation loop:
@@ -76,10 +76,10 @@ public class MidiSparkleEffect extends EffectBase {
 		
 		Pixel monochromeColor = Pixel.black();
 		
-		float saturation = 1.0f;
+		float saturation = 0.0f;
 		float brightness = 1.0f;
         
-        float coverage = 0.1f;
+        float coverage = 0.001f;
         
         
 		

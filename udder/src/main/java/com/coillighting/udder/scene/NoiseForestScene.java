@@ -51,37 +51,48 @@ public abstract class NoiseForestScene {
         Layer background = new Layer("Background",
             new MidiMonochromeEffect(shortmessage));
         background.setBlendOp(max);
-		//background.setLevel(1.0);
         layers.add(background);
 		
         Layer imageRoll1 = new Layer("imageRoll1-MAX",
             new MidiImageRollEffect(shortmessage));
         imageRoll1.setBlendOp(max);
-		//background.setLevel(1.0);
         layers.add(imageRoll1);
-        
-        Layer imageRoll2 = new Layer("imageRoll2-MASK",
+		
+        Layer imageRoll2 = new Layer("imageRoll2-MAX",
             new MidiImageRollEffect(shortmessage));
-        imageRoll2.setBlendOp(mask);
-		//background.setLevel(1.0);
+        imageRoll2.setBlendOp(max);
         layers.add(imageRoll2);
-        
+		
         Layer imageRoll3 = new Layer("imageRoll3-MAX",
             new MidiImageRollEffect(shortmessage));
         imageRoll3.setBlendOp(max);
-		//background.setLevel(1.0);
         layers.add(imageRoll3);
-        
+		
         Layer imageRoll4 = new Layer("imageRoll4-MAX",
             new MidiImageRollEffect(shortmessage));
         imageRoll4.setBlendOp(max);
-		//background.setLevel(1.0);
         layers.add(imageRoll4);
+		
+        Layer imageRoll5 = new Layer("imageRoll5-MAX",
+            new MidiImageRollEffect(shortmessage));
+        imageRoll5.setBlendOp(max);
+        layers.add(imageRoll5);
+		
+        Layer imageRoll6 = new Layer("imageRoll6-MAX",
+            new MidiImageRollEffect(shortmessage));
+        imageRoll6.setBlendOp(max);
+        layers.add(imageRoll6);
+		
+        
+        Layer imageRoll7 = new Layer("imageRoll7-MASK",
+            new MidiImageRollEffect(shortmessage));
+        imageRoll7.setBlendOp(mask);
+        layers.add(imageRoll7);
+
         
         Layer sparkle = new Layer("sparkle",
             new MidiSparkleEffect(shortmessage));
         sparkle.setBlendOp(max);
-		//background.setLevel(1.0);
         layers.add(sparkle);
         
         
