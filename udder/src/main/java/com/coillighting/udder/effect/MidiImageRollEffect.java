@@ -20,6 +20,7 @@ public class MidiImageRollEffect extends EffectBase {
 
     private boolean dirty = false;
     private ShortMessage message = null;
+	protected boolean noteon = false;
 	private Pixel color = null;
 	
     protected String filename = null;
@@ -98,6 +99,7 @@ public class MidiImageRollEffect extends EffectBase {
 		case 0x80:
 		//  NOTE OFF
 			//System.out.println(" Note Off.");
+			this.setNoteOff(message);
 			break;
 		case 0x90:
 		//  NOTE ON.  
@@ -151,8 +153,14 @@ public class MidiImageRollEffect extends EffectBase {
         } else if(this.message == null || !this.message.equals(message)) {
             this.message = (ShortMessage) message.clone();
             this.dirty = true;
+			this.noteon = true;
         }
     }
+	
+	public void setNoteOff(ShortMessage message) {
+		this.message = (ShortMessage) message.clone();
+        this.noteon = false;
+	}
 	
 
     /** Draw pictures only when needed. */
@@ -173,14 +181,19 @@ public class MidiImageRollEffect extends EffectBase {
                 // FADES
 				if (releaseEnv > 0.05f) {
 					if (attackEnv > 0.99f) {
+						//System.out.println(this.attackEnv);
 			            for(int i=0; i<devices.length; i++) {
 			                Device dev = devices[i];
 							p.setRGBColor(image.getRGB(i, yLocation));
 							p.scale(releaseEnv);
 							pixels[i].setColor(p);
 						}
-					releaseEnv = releaseEnv - release;
-						
+						if (this.noteon == true) {
+							//System.out.println("MidiMonochromeEffect SUSTAIN");
+						} else {
+							releaseEnv = releaseEnv - release;
+						}
+
 					} else {
 			            for(int i=0; i<devices.length; i++) {
 			                Device dev = devices[i];
@@ -191,6 +204,9 @@ public class MidiImageRollEffect extends EffectBase {
 					attackEnv = attackEnv + attack;
 					}
 					yLocation = yLocation + 1;
+					if (yLocation >= imageHeight) {
+						yLocation = 1;
+					}
 					
 				} else {
 					
