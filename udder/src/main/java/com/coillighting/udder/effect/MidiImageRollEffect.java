@@ -28,7 +28,10 @@ public class MidiImageRollEffect extends EffectBase {
     protected int imageWidth = 0;
     protected int imageHeight = 0;
 	
-	protected int yLocation = 0;
+	protected int yLocation = 1;
+	
+	protected int yLocationOffsetIndex = 0;  // analog to sample beat slicing.  How many offset amounts to offset by.
+	protected float yLocationOffsetAmount = 47.39f; // Dial this in to the pixel offset per beat.  127.0 BPM is roughly equivalent to 47.39 pixels
 	
 	protected float attack = 0.05f;
 	
@@ -41,13 +44,15 @@ public class MidiImageRollEffect extends EffectBase {
     // Scratch variables that we shouldn't reallocate on every
     // trip through the animation loop:
     private Pixel p;
-	
+	private int yOffsetLocation;
+	private int yOffsetLocationActual;
+	private int xLocation = 1;
 
     public MidiImageRollEffect(MidiImageRollState message) {
 		
 		System.out.println("MidiImageRollEffect INIT ");
         
-		this.filename = "images/dairy_collection_A_720p/coppertone_trigrams.png";
+		this.filename = "images/tactix/47x47_gradient_test.png";
 		this.setState(message);
 		
 		this.reloadImage();
@@ -136,6 +141,14 @@ public class MidiImageRollEffect extends EffectBase {
 					this.release = 0.01f;
 				}
 				//System.out.format("MidiImageRollEffect Set Release: %f", this.release);
+			} else if (message.getData1() == 3) {
+				
+				if (message.getData2() > 0) {
+					this.yLocationOffsetIndex = message.getData2();
+				} else {
+					this.yLocationOffsetIndex = 0;
+				}
+				//System.out.format("MidiImageRollEffect Set Y Offset Index: %d", this.yLocationOffsetIndex);
 			}
 			
 			break;		
@@ -176,7 +189,21 @@ public class MidiImageRollEffect extends EffectBase {
 	            }
 				
 			} else {
-				// Pixel offset by note number
+				// Figure out the offset
+				yOffsetLocation = Math.round(yLocationOffsetIndex * yLocationOffsetAmount);
+				if (yOffsetLocation >= imageHeight) {
+					yOffsetLocation = yOffsetLocation/imageHeight;
+				}
+				if (yOffsetLocation >= imageHeight) {
+					yOffsetLocation = 0;
+				}
+				// Loop our location if we need to
+				if (yLocation + yOffsetLocation >= imageHeight) {
+					yOffsetLocationActual = (yLocation + yOffsetLocation) / imageHeight;
+				} else {
+					yOffsetLocationActual = yLocation + yOffsetLocation;
+				}
+				
 				
                 // FADES
 				if (releaseEnv > 0.05f) {
@@ -184,7 +211,14 @@ public class MidiImageRollEffect extends EffectBase {
 						//System.out.println(this.attackEnv);
 			            for(int i=0; i<devices.length; i++) {
 			                Device dev = devices[i];
-							p.setRGBColor(image.getRGB(i, yLocation));
+							
+							// make sure we don't exceed the image width
+							if (i >= imageWidth){
+								xLocation = i % imageWidth;  // get the remainder
+							} else {
+								xLocation = i;
+							}
+							p.setRGBColor(image.getRGB(xLocation, yOffsetLocationActual));
 							p.scale(releaseEnv);
 							pixels[i].setColor(p);
 						}
@@ -197,7 +231,15 @@ public class MidiImageRollEffect extends EffectBase {
 					} else {
 			            for(int i=0; i<devices.length; i++) {
 			                Device dev = devices[i];
-							p.setRGBColor(image.getRGB(i, yLocation));
+							
+							// make sure we don't exceed the image width
+							if (i >= imageWidth){
+								xLocation = i % imageWidth;  // get the remainder
+							} else {
+								xLocation = i;
+							}
+							
+							p.setRGBColor(image.getRGB(xLocation, yOffsetLocationActual));
 							p.scale(attackEnv);
 							pixels[i].setColor(p);
 						}
