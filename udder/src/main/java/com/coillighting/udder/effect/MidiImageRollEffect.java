@@ -192,14 +192,14 @@ public class MidiImageRollEffect extends EffectBase {
 				// Figure out the offset
 				yOffsetLocation = Math.round(yLocationOffsetIndex * yLocationOffsetAmount);
 				if (yOffsetLocation >= imageHeight) {
-					yOffsetLocation = yOffsetLocation/imageHeight;
+					yOffsetLocation = yOffsetLocation%imageHeight;
 				}
 				if (yOffsetLocation >= imageHeight) {
 					yOffsetLocation = 0;
 				}
 				// Loop our location if we need to
 				if (yLocation + yOffsetLocation >= imageHeight) {
-					yOffsetLocationActual = (yLocation + yOffsetLocation) / imageHeight;
+					yOffsetLocationActual = (yLocation + yOffsetLocation) % imageHeight;
 				} else {
 					yOffsetLocationActual = yLocation + yOffsetLocation;
 				}
