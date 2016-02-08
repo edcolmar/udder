@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+#3-noiseverbs layer 5
+curl -X POST -d @../json/tactix/3-noiseverbs.json http://192.168.0.249:8080/mixer0/layer5/effect
+curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer5
+#3-kickaccent layer 7
+curl -X POST -d @../json/tactix/3-kickaccent.json http://192.168.0.249:8080/mixer0/layer7/effect
+curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer7
+# dist layer 2
+curl -X POST -d @../json/tactix/midi_imageroll_dist.json http://192.168.0.249:8080/mixer0/layer2/effect
+curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer2
