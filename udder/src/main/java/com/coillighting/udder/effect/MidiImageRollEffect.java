@@ -52,7 +52,7 @@ public class MidiImageRollEffect extends EffectBase {
 		
 		System.out.println("MidiImageRollEffect INIT ");
         
-		this.filename = "images/tactix/47x47_gradient_test.png";
+		this.filename = "images/tactix/color_offset_test.png";
 		this.setState(message);
 		
 		this.reloadImage();
