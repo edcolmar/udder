@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-#3-noiseverbs layer 5
+#3-noiseverbs layer 2
 curl -X POST -d @../json/tactix/force_forward/02-texture2.json http://192.168.0.249:8080/mixer0/layer2/effect
 curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer2
 # 7-statix layer 5
@@ -8,3 +8,12 @@ curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer5
 # 3-bass layer 6
 curl -X POST -d @../json/tactix/force_forward/03-bass.json http://192.168.0.249:8080/mixer0/layer6/effect
 curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer6
+# 04-perc layer 3
+curl -X POST -d @../json/tactix/force_forward/04-perc.json http://192.168.0.249:8080/mixer0/layer3/effect
+curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer3
+# 07-perc layer 4
+curl -X POST -d @../json/tactix/force_forward/07-perc2.json http://192.168.0.249:8080/mixer0/layer4/effect
+curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer4
+# 06-rez_sweeps layer 7
+curl -X POST -d @../json/tactix/force_forward/06-rez_sweeps.json http://192.168.0.249:8080/mixer0/layer7/effect
+curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer7

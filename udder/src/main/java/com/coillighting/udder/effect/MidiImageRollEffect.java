@@ -31,7 +31,7 @@ public class MidiImageRollEffect extends EffectBase {
 	protected int yLocation = 1;
 	
 	protected int yLocationOffsetIndex = 0;  // analog to sample beat slicing.  How many offset amounts to offset by.
-	protected float yLocationOffsetAmount = 47.39f; // Dial this in to the pixel offset per beat.  127.0 BPM is roughly equivalent to 47.39 pixels
+	protected float yLocationOffsetAmount = 47.0f; // Dial this in to the pixel offset per beat.  127.0 BPM is roughly equivalent to 47.39 pixels
 	
 	protected float attack = 0.05f;
 	
