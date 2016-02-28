@@ -1,19 +1,22 @@
 #!/usr/bin/env sh
 #3-noiseverbs layer 5
-curl -X POST -d @../json/tactix/01-noiseverbs.json http://192.168.0.249:8080/mixer0/layer5/effect
+curl -X POST -d @../json/tactix/resolve/01-noiseverbs.json http://192.168.0.249:8080/mixer0/layer5/effect
 curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer5
 #3-kickaccent layer 7
-curl -X POST -d @../json/tactix/03-kickaccent.json http://192.168.0.249:8080/mixer0/layer7/effect
+curl -X POST -d @../json/tactix/resolve/03-kickaccent.json http://192.168.0.249:8080/mixer0/layer7/effect
 curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer7
 # dist layer 2
-curl -X POST -d @../json/tactix/midi_imageroll_dist.json http://192.168.0.249:8080/mixer0/layer2/effect
+curl -X POST -d @../json/tactix/resolve/midi_imageroll_dist.json http://192.168.0.249:8080/mixer0/layer2/effect
 curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer2
 # bass layer 6
-curl -X POST -d @../json/tactix/03-bass.json http://192.168.0.249:8080/mixer0/layer6/effect
+curl -X POST -d @../json/tactix/resolve/03-bass.json http://192.168.0.249:8080/mixer0/layer6/effect
 curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer6
 # percgroup 1 layer 2
-curl -X POST -d @../json/tactix/03-percgroup1.json http://192.168.0.249:8080/mixer0/layer3/effect
+curl -X POST -d @../json/tactix/resolve/03-percgroup1.json http://192.168.0.249:8080/mixer0/layer3/effect
 curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer3
 # snare layer 4 
-curl -X POST -d @../json/tactix/04-snare.json http://192.168.0.249:8080/mixer0/layer4/effect
+curl -X POST -d @../json/tactix/resolve/04-snare.json http://192.168.0.249:8080/mixer0/layer4/effect
 curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer4
+# bassgroup layer 8
+curl -X POST -d @../json/tactix/resolve/06-bassgroup.json http://192.168.0.249:8080/mixer0/layer8/effect
+curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer8
