@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-curl -X POST -d @../json/tactix/01-noiseverbs.json http://192.168.0.249:8080/mixer0/layer5/effect
-curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer5

@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-curl -X POST -d @../json/tactix/04-snare.json http://192.168.0.249:8080/mixer0/layer4/effect
-curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer4
