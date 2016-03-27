@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+#01-nvr layer 5
+curl -X POST -d @../json/tactix/walk_the_surface/01-NVR.json http://192.168.0.249:8080/mixer0/layer5/effect
+curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer5
