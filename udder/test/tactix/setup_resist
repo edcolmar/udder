@@ -11,3 +11,6 @@ curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer7
 #03-303layer 6
 curl -X POST -d @../json/tactix/resist/03-303.json http://192.168.0.249:8080/mixer0/layer6/effect
 curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer6
+#08-hats3s layer 3
+curl -X POST -d @../json/tactix/resist/08-hat-3s.json http://192.168.0.249:8080/mixer0/layer3/effect
+curl -X POST -d @../json/level_full.json http://192.168.0.249:8080/mixer0/layer3
